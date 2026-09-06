@@ -1,0 +1,10 @@
+# Copy to /etc/ha-server-monitor-agent/agent.conf (the package installs this
+# exact default there already -- only edit if you need to change something).
+
+# Port the daemon listens on for pairing (/register, /info) and local alert
+# triggers (/trigger-event). Must match the port in the Avahi mDNS
+# advertisement (ha-server-monitor-agent-mdns.service) if you change it.
+PORT=8477
+
+# How often to push a storage-topology heartbeat to Home Assistant.
+HEARTBEAT_INTERVAL_SECONDS=900

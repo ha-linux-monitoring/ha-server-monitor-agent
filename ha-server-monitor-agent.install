@@ -1,0 +1,28 @@
+post_install() {
+    systemctl enable --now avahi-daemon.service
+    systemctl enable --now ha-server-monitor-agent.service
+
+    cat <<EOF
+==> ha-server-monitor-agent installed and started (avahi-daemon +
+==> ha-server-monitor-agent.service both enabled).
+==>
+==> It ships unpaired. In Home Assistant: Settings -> Devices & Services ->
+==> Add Integration -> HA Server Monitor -- it should be auto-discovered via
+==> mDNS; if not, add it manually with this host's address and port 8477
+==> (see /etc/ha-server-monitor-agent/agent.conf).
+EOF
+}
+
+post_upgrade() {
+    systemctl daemon-reload
+    systemctl restart ha-server-monitor-agent.service
+
+    cat <<EOF
+==> ha-server-monitor-agent updated and restarted (already-paired agents
+==> re-report immediately on restart, no waiting for the next heartbeat).
+EOF
+}
+
+pre_remove() {
+    systemctl disable --now ha-server-monitor-agent.service || true
+}

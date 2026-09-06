@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<!--
+  Avahi service definition, not a systemd unit (despite the extension;
+  Avahi requires files under its services directory to end in .service).
+  Picked up automatically by avahi-daemon once installed to
+  /etc/avahi/services/: confirmed this is the only directory Avahi on
+  Arch actually watches (its own startup log says so, and the avahi
+  package itself never provisions a /usr/lib/avahi/services path).
+  Advertises this host's ha-server-monitor-agentd so the ha_server_monitor
+  Home Assistant integration can discover it via zeroconf instead of the
+  user typing in a host/IP by hand.
+
+  If you change PORT in /etc/ha-server-monitor-agent/agent.conf, update the
+  port element below to match and restart avahi-daemon.
+-->
+<service-group>
+  <name replace-wildcards="yes">HA Server Monitor agent on %h</name>
+  <service>
+    <type>_ha-server-monitor._tcp</type>
+    <port>8477</port>
+    <txt-record>version=1.0.0</txt-record>
+  </service>
+</service-group>
